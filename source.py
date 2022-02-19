@@ -11,7 +11,14 @@ class HotelBookingApp:
         self.rating = 0
           
     def get_num_of_days(self):
-        self.num_of_days = int(input("Enter number of days: "))
+        self.num_of_days = input("Enter number of days (1 to 7): ")
+        try: 
+            self.num_of_days = int(self.num_of_days)
+            if (self.num_of_days < 1 or self.num_of_days > 7):
+                print("INVALID INPUT!\nRoom can only be booked for a period of 1 to 7 days.")
+
+        except ValueError: 
+            print("INVALID INPUT!\nNumber of days should be a valid integer.")
     
     def get_amount(self):
         self.amount = int(input("Enter amount: "))
