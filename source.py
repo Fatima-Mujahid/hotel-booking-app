@@ -21,7 +21,22 @@ class HotelBookingApp:
             print("INVALID INPUT!\nNumber of days should be a valid integer.")
     
     def get_amount(self):
-        self.amount = int(input("Enter amount: "))
+        self.amount = input("Enter amount to pay per day: ")
+        try: 
+            self.amount = int(self.amount)
+            if (self.amount < 0):
+                print("INVALID INPUT!\nRAmount cannot be negative.")
+            elif (self.amount < 10000):
+                print("You are allotted a Studio.")
+            elif (self.amount <= 25000):
+                print("You are allotted an Executive Suite.")
+            elif (self.amount < 50000):
+                print("Hotel does not provide rooms between Rs. 25001 to 49999.")
+            else:
+                print("You are allotted a Cabana.")
+
+        except ValueError: 
+            print("INVALID INPUT!\nAmount should be a valid integer.")
 
     def get_user_info(self):
         self.name = input("Enter name: ")
