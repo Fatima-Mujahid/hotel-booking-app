@@ -1,3 +1,6 @@
+import datetime
+import re
+
 class HotelBookingApp:
 
     # Default constructor
@@ -18,7 +21,7 @@ class HotelBookingApp:
                 print("INVALID INPUT!\nRoom can only be booked for a period of 1 to 7 days.")
 
         except ValueError: 
-            print("INVALID INPUT!\nNumber of days should be a valid integer.")
+            print("INVALID INPUT!\nNumber of days must be a valid integer.")
     
     def get_amount(self):
         self.amount = input("Enter amount to pay per day: ")
@@ -31,17 +34,29 @@ class HotelBookingApp:
             elif (self.amount <= 25000):
                 print("You are allotted an Executive Suite.")
             elif (self.amount < 50000):
-                print("Hotel does not provide rooms between Rs. 25001 to 49999.")
+                print("INVALID INPUT!\nHotel does not provide rooms between Rs. 25001 to 49999.")
             else:
                 print("You are allotted a Cabana.")
 
         except ValueError: 
-            print("INVALID INPUT!\nAmount should be a valid integer.")
+            print("INVALID INPUT!\nAmount must be a valid integer.")
 
     def get_user_info(self):
         self.name = input("Enter name: ")
-        self.birthday = input("Enter birthday: ")
-        self.cnic = input("Enter cnic number: ")
+        pattern = re.compile("^[a-zA-Z ]+$")
+        if (not(pattern.match(self.name) and self.name.istitle())):
+            print("INVALID INPUT!\nName must be alphabetic and in title case.")
+
+        self.birthday = input("Enter birthday (dd-mm-yyyy): ")
+        try:
+            datetime.datetime.strptime(self.birthday, "%d-%m-%Y")
+
+        except ValueError:
+            print("INVALID INPUT!\nDate should be valid and in format dd-mm-yyyy.")
+
+        self.cnic = input("Enter CNIC number: ")
+        if (not(len(self.cnic) == 13 and re.match('^[0-9]*$', self.cnic))):
+            print("INVALID INPUT!\nCNIC number must be numeric and exactly 13 digits.")
 
     def get_cnic_photocopy(self):
         self.cnic_photocopy = input("Enter absolute path of cnic photocopy: ")
