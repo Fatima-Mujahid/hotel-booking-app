@@ -62,7 +62,14 @@ class HotelBookingApp:
         self.cnic_photocopy = input("Enter absolute path of cnic photocopy: ")
 
     def get_rating(self):
-        self.rating = int(input("Enter rating: "))
+        self.rating = input("Rate your experience (1 to 5) or Enter 0 to skip rating: ")
+        try: 
+            self.rating = int(self.rating)
+            if (self.rating != 0 and (self.rating < 1 or self.rating > 5)):
+                print("INVALID INPUT!\nRating can only be 1, 2, 3, 4 or 5.")
+
+        except ValueError: 
+            print("INVALID INPUT!\nRating must be a valid integer.")
 
     def display(self):
         print("\n----------INFO----------\n")
@@ -72,7 +79,7 @@ class HotelBookingApp:
         print("Birthday: ", self.birthday)
         print("CNIC number: ", self.cnic)
         print("CNIC photocopy path: ", self.cnic_photocopy)
-        print("Rating: ", self.rating)
+        print("Rating: ", "Not rated yet" if self.rating == 0 else self.rating)
   
 # Driver code
 # Object instantiation
