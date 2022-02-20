@@ -20,12 +20,14 @@ class HotelBookingApp:
     # -----Input and validate number of days-----  
 
     def get_num_of_days(self):
-        self.num_of_days = input("\nEnter number of days (1 to 7): ")
+        num_of_days = input("\nEnter number of days (1 to 7): ")
 
         try: 
-            self.num_of_days = int(self.num_of_days)
-            if (self.num_of_days < 1 or self.num_of_days > 7):
-                print("INVALID INPUT!\nRoom can only be booked for a period of 1 to 7 days.")
+            num_of_days = int(num_of_days)
+            if (num_of_days >= 1 and num_of_days <= 7):
+                self.num_of_days = num_of_days      
+            else: 
+                print("INVALID INPUT!\nRoom can only be booked for a period of 1 to 7 days.")        
 
         except ValueError: 
             print("INVALID INPUT!\nNumber of days must be a valid integer.")
@@ -33,20 +35,25 @@ class HotelBookingApp:
     # -----Input and validate amount to pay per day-----
 
     def get_amount(self):
-        self.amount = input("\nEnter amount to pay per day: ")
+        print("\nLess than 10000 -> Studio\n10000 to 25000 -> Executive Suite\nGreater than 50000 -> Cabana\n25001 to 49999 -> No rooms available")
+        amount = input("\nEnter amount to pay per day: ")
 
         try: 
-            self.amount = int(self.amount)
-            if (self.amount < 0):
+            valid = True
+            amount = int(amount)
+            if (amount < 0):
                 print("INVALID INPUT!\nRAmount cannot be negative.")
-            elif (self.amount < 10000):
+                valid = False
+            elif (amount < 10000):
                 print("You are allotted a Studio.")
-            elif (self.amount <= 25000):
+            elif (amount <= 25000):
                 print("You are allotted an Executive Suite.")
-            elif (self.amount < 50000):
+            elif (amount < 50000):
                 print("INVALID INPUT!\nHotel does not provide rooms between Rs. 25001 to 49999.")
+                valid = False
             else:
                 print("You are allotted a Cabana.")
+            if valid: self.amount = amount  
 
         except ValueError: 
             print("INVALID INPUT!\nAmount must be a valid integer.")
@@ -56,34 +63,43 @@ class HotelBookingApp:
     def get_user_info(self):
 
         # Input name
-        self.name = input("\nEnter name: ")
+        name = input("\nEnter name: ")
         pattern = re.compile("^[a-zA-Z ]+$")
 
-        if (not(pattern.match(self.name) and self.name.istitle())):
+        if (pattern.match(name) and name.istitle()):
+            self.name = name
+
+        else:           
             print("INVALID INPUT!\nName must be alphabetic and in title case.")
 
         # Input birthday
-        self.birthday = input("\nEnter birthday (dd-mm-yyyy): ")
+        birthday = input("\nEnter birthday (dd-mm-yyyy): ")
 
         try:
-            datetime.datetime.strptime(self.birthday, "%d-%m-%Y")
+            datetime.datetime.strptime(birthday, "%d-%m-%Y")
+            self.birthday = birthday
 
         except ValueError:
             print("INVALID INPUT!\nDate should be valid and in format dd-mm-yyyy.")
 
         # Input cnic number
-        self.cnic = input("\nEnter CNIC number: ")
+        cnic = input("\nEnter CNIC number: ")
 
-        if (not(len(self.cnic) == 13 and re.match('^[0-9]*$', self.cnic))):
+        if (len(cnic) == 13 and re.match('^[0-9]*$', cnic)):
+            self.cnic = cnic
+
+        else:
             print("INVALID INPUT!\nCNIC number must be numeric and exactly 13 digits.")
 
     # -----Input cnic photocopy path-----
 
     def get_cnic_photocopy(self):
-        self.cnic_photocopy = input("\nEnter absolute path of cnic photocopy: ")
+        cnic_photocopy = input("\nEnter absolute path of cnic photocopy: ")
 
-        if (os.path.isfile(self.cnic_photocopy)):
-            if (not(self.cnic_photocopy.endswith((".jpeg", ".png")))):
+        if (os.path.isfile(cnic_photocopy)):
+            if (cnic_photocopy.endswith((".jpeg", ".png"))):
+                self.cnic_photocopy = cnic_photocopy
+            else:
                 print ("INVALID INPUT!\nFile format must be .jpeg or .png.")
         
         else:
@@ -92,12 +108,14 @@ class HotelBookingApp:
     # -----Input and validate rating-----
 
     def get_rating(self):
-        self.rating = input("\nRate your experience (1 to 5) or Enter 0 to skip rating: ")
+        rating = input("\nRate your experience (1 to 5) or Enter 0 to skip rating: ")
         
         try: 
-            self.rating = int(self.rating)
-            if (self.rating != 0 and (self.rating < 1 or self.rating > 5)):
+            rating = int(rating)
+            if (rating != 0 and (rating < 1 or rating > 5)):
                 print("INVALID INPUT!\nRating can only be 1, 2, 3, 4 or 5.")
+            else:
+                self.rating = rating
 
         except ValueError: 
             print("INVALID INPUT!\nRating must be a valid integer.")
@@ -107,7 +125,7 @@ class HotelBookingApp:
     def display(self):
         print("\n----------BOOKING DETAILS----------\n")
         print("Number of days: ", self.num_of_days)
-        print("Amount per day: ", self.amount)
+        print("Amount per day: Rs. ", self.amount)
         print("Name: ", self.name)
         print("Birthday: ", self.birthday)
         print("CNIC number: ", self.cnic)
